@@ -1,0 +1,35 @@
+function parse_git_commits {
+  status=`git status -s -b 2> /dev/null | head -n 1`
+  [[ $status == \#\#* ]] && echo "`sed -n "s/.*ahead \([0-9]*\).*/\+\1/p" <<< "$status"``sed -n "s/.*behind \([0-9]*\).*/\-\1/p" <<< "$status"`"
+}
+
+function parse_git_dirty {
+  [[ -n "`git status -s 2> /dev/null`" ]] && echo "*" 
+}
+
+function parse_git_branch {
+  status=`git status -s -b 2> /dev/null | head -n 1`
+  [[ $status == \#\#* ]] && echo "[$(parse_git_dirty)`echo "$status" | cut -d " " -f2 | cut -d "." -f1`$(parse_git_commits)]"
+}
+
+git_ls() 
+{
+  status=`git status -s 2> /dev/null`
+  if [[ -z "$status" ]]; then
+    ls "$@"
+  else
+    declare -a fandfs
+    declare -a types
+    while read -r line; do
+      fandfs+=("`echo "$line" | cut -d "/" -f1 | sed -e s/\ \ /\ /g | cut -d " " -f2`")
+      types+=("`echo "$line" | cut -d "/" -f1 | sed -e s/\ \ /\ /g | cut -d " " -f1`")
+    done <<< "$status"
+    fandfs=(`echo "${fandfs[@]}" | tr ' ' '\n' | sort -u | sed -e 's/[]\/()$*.^|[]/\\\&/g'`)
+    command="sed"
+    for file in "${fandfs[@]}"; do command="$command -e s/$file/$file\*/g"; done
+    export COLUMNS="`tput cols`"  
+    ls -C "$@" | $command
+  fi
+}
+
+alias ls=git_ls
