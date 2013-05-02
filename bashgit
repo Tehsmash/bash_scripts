@@ -1,3 +1,6 @@
+#!/bin/bash
+# This is as implementation of git support in bash
+
 function parse_git_commits {
   status=`git status -s -b 2> /dev/null | head -n 1`
   [[ $status == \#\#* ]] && echo "`sed -n "s/.*ahead \([0-9]*\).*/\+\1/p" <<< "$status"``sed -n "s/.*behind \([0-9]*\).*/\-\1/p" <<< "$status"`"
@@ -16,7 +19,7 @@ git_ls()
 {
   status=`git status -s 2> /dev/null`
   if [[ -z "$status" ]]; then
-    ls "$@"
+    `which ls` "$@"
   else
     declare -a fandfs
     declare -a types
@@ -26,9 +29,11 @@ git_ls()
     done <<< "$status"
     fandfs=(`echo "${fandfs[@]}" | tr ' ' '\n' | sort -u | sed -e 's/[]\/()$*.^|[]/\\\&/g'`)
     command="sed"
-    for file in "${fandfs[@]}"; do command="$command -e s/$file/$file\*/g"; done
+    for file in "${fandfs[@]}"; do
+      command="$command -e s/$file/$file\*/g"; 
+    done
     export COLUMNS="`tput cols`"  
-    ls -C "$@" | $command
+    `which ls` -C "$@" | $command
   fi
 }
 

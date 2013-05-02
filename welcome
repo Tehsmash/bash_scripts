@@ -1,0 +1,18 @@
+#!/bin/bash
+
+# A Bash Welcome Program
+
+# Get Time
+d=`date +"%H"`
+
+# Get User
+u=`whoami`
+
+# Calculate Time and print message
+if [ $d -gt 16 ] ; then
+	echo "Good Evening $u"
+elif [ $d -gt 11 ] ; then
+	echo "Good Afternoon $u"
+else 
+	echo "Good Morning $u"
+fi 
