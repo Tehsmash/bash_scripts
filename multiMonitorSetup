@@ -1,0 +1,19 @@
+#!/bin/bash
+screens=$(xrandr -q | grep '.* connected' | sed 's/\([0-9a-zA-Z]*\).*/\1/')
+
+first=true
+
+for i in $screens ; do
+	if $first ; then
+		previous_screen=$i		
+		first=false
+	else
+		xrandr --output $i --auto --right-of $previous_screen
+		temp_screen=$i	
+	fi
+done
+
+echo "Screens Setup Correctly"
+
+exit 0
+
