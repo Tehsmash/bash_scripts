@@ -1,0 +1,3 @@
+git config --global user.name "Sam Betts"
+git config --global user.email "sam@code-smash.net"
+git config --global core.editor vim
