@@ -10,6 +10,33 @@ require("naughty")
 -- Load Debian menu entries
 require("debian.menu")
 
+vicious = require("vicious")
+
+-- {{{ Error handling
+-- Check if awesome encountered an error during startup and fell back to
+-- another config (This code will only ever execute for the fallback config)
+if awesome.startup_errors then
+    naughty.notify({ preset = naughty.config.presets.critical,
+                     title = "Oops, there were errors during startup!",
+                     text = awesome.startup_errors })
+end
+
+-- Handle runtime errors after startup
+do
+    local in_error = false
+    awesome.add_signal("debug::error", function (err)
+        -- Make sure we don't go into an endless error loop
+        if in_error then return end 
+        in_error = true
+
+        naughty.notify({ preset = naughty.config.presets.critical,
+                         title = "Oops, an error happened!",
+                         text = err })
+        in_error = false
+    end)
+end
+-- }}}
+
 -- {{{ Variable definitions
 -- Themes define colours, icons, and wallpapers
 beautiful.init(awful.util.getdir("config") .. "/themes/aurora/theme.lua")
@@ -75,6 +102,14 @@ mylauncher = awful.widget.launcher({ image = image(beautiful.awesome_icon),
 -- {{{ Wibox
 -- Create a textclock widget
 mytextclock = awful.widget.textclock({ align = "right" })
+
+-- CPU Graph
+cpgraph = awful.widget.graph({ align = "right" })
+cpgraph:set_width(50)
+cpgraph:set_background_color('#494B4F')
+cpgraph:set_color('#FF5656')
+cpgraph:set_gradient_colors({ '#FF5656', '#88A175', '#AECF96' })
+vicious.register(cpgraph, vicious.widgets.cpu, "$1")
 
 -- Create a systray
 mysystray = widget({ type = "systray" })
@@ -149,6 +184,7 @@ for s = 1, screen.count() do
         },
         mylayoutbox[s],
         mytextclock,
+        cpgraph,
         s == 1 and mysystray or nil,
         mytasklist[s],
         layout = awful.widget.layout.horizontal.rightleft

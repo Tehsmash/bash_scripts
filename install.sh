@@ -4,7 +4,7 @@
 # 
 
 #Install Apps
-sudo apt-get install -y vim xfce4-terminal irssi awesome xorg slim git
+sudo apt-get install -y vim xfce4-terminal irssi awesome awesome-extra xorg slim git meld chromium 
 
 #Setup VIM
 ln -s ~/bash_scripts/templatevimrc ~/.vimrc

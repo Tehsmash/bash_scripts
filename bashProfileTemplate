@@ -4,7 +4,7 @@ if [ -f ~/.bashrc ]; then
    source ~/.bashrc
 fi
 
-export PS1='\u@\h:[\!]\w$(parse_git_branch)\$ ' 
+export PS1='\u@\h:[\!]$(parse_git_branch)\$ ' 
 
 alias clear='clear; echo "Current Folder: $PWD"; ls; echo'
 
