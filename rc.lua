@@ -104,7 +104,7 @@ mylauncher = awful.widget.launcher({ image = image(beautiful.awesome_icon),
 mytextclock = awful.widget.textclock({ align = "right" })
 
 -- CPU Graph
-cpgraph = awful.widget.graph({ align = "right" })
+cpgraph = awful.widget.graph({ layout = awful.widget.layout.horizontal.rightleft })
 cpgraph:set_width(50)
 cpgraph:set_background_color('#494B4F')
 cpgraph:set_color('#FF5656')
