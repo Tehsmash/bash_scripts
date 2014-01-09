@@ -38,3 +38,5 @@ git_ls()
 }
 
 alias ls=git_ls
+
+echo "BASH GIT FUNCTIONS ADDED"
