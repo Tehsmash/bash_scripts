@@ -26,7 +26,9 @@ def cHTML(html):
     return h.get_data() 
 
 def new_message(account, sender, message, conversation, flags):
-    notify(sender, cHTML(message), 15)
+    buddy = purple.PurpleFindBuddy(account, sender)
+    buddy = purple.PurpleBuddyGetAlias(buddy)
+    notify(buddy, cHTML(message), 15)
 
 def logged_in(buddy):
     buddy = purple.PurpleBuddyGetAlias(buddy)
