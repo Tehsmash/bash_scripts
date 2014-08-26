@@ -5,7 +5,7 @@ require 'socket'
 
 begin
   if ARGV[0] == "--ssh"
-    %x( ssh #{ARGV[1]} 'ruby quickpasteclient.rb #{ARGV[2]}' )
+    %x( ssh #{ARGV[1]} 'quickpasteclient #{ARGV[2]}' )
   else
     streamSock = TCPSocket.open("127.0.0.1", 6666)
     streamSock.puts(ARGV[0])
