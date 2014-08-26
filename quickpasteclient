@@ -18,7 +18,8 @@ trap("HUP") { kill_everything }
 
 begin
   if ARGV[0] == "--ssh"
-    %x( ssh -t #{ARGV[1]} 'quickpasteclient' )
+    cmd = %(ssh -t #{ARGV[1]} './bash_scripts/quickpasteclient')
+    system(cmd)
   else
     streamSock = TCPSocket.open("127.0.0.1", 6666)
     streamSock.puts(ARGV[0])
