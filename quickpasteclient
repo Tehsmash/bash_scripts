@@ -3,9 +3,22 @@
 require 'thread'
 require 'socket'
 
+def output(obj)
+  puts obj
+  $stdout.flush
+end
+
+def kill_everything
+  output "Shutting Down!"
+  exit
+end
+
+trap("INT") { kill_everything }
+trap("HUP") { kill_everything }
+
 begin
   if ARGV[0] == "--ssh"
-    %x( ssh #{ARGV[1]} 'quickpasteclient #{ARGV[2]}' )
+    %x( ssh -t #{ARGV[1]} 'quickpasteclient #{ARGV[2]}' )
   else
     streamSock = TCPSocket.open("127.0.0.1", 6666)
     streamSock.puts(ARGV[0])
@@ -21,10 +34,11 @@ rescue
     end
   end
 
-  t = Thread.new {threadCode}
-  t.abort_on_exception = true
+  @t = Thread.new {threadCode}
+
+  output "Waiting for Pastes" 
 
   while true
-    puts @queue.pop
+    output @queue.pop
   end
 end
