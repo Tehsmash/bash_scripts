@@ -1,0 +1,30 @@
+#!/usr/bin/env ruby
+
+require 'thread'
+require 'socket'
+
+begin
+  if ARGV[0] == "--ssh"
+    %x( ssh #{ARGV[1]} 'ruby quickpasteclient.rb #{ARGV[2]}' )
+  else
+    streamSock = TCPSocket.open("127.0.0.1", 6666)
+    streamSock.puts(ARGV[0])
+  end 
+rescue
+  @queue = Queue.new
+
+  def threadCode 
+    s = TCPServer.new(6666)
+    while true
+      client = s.accept
+      @queue << client.recvmsg[0]
+    end
+  end
+
+  t = Thread.new {threadCode}
+  t.abort_on_exception = true
+
+  while true
+    puts @queue.pop
+  end
+end
