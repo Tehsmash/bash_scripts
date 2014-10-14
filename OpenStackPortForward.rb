@@ -18,7 +18,7 @@ class OpenStackPortForward
       service['endpoints'].each do |endpoint|
         uri = URI(endpoint['internalURL'])
         ep = [uri.host, uri.port]
-        unless endpoints.include? ep
+        unless endpoints.include? ep or uri.port == 5000
           endpoints.push(ep)
           portforwards = portforwards + (partial % {port: ep[1], address:ep[0]})
         end
