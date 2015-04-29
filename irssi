@@ -1,0 +1,24 @@
+#!/bin/bash
+
+exec 2>>~/log/irssi-notify-log
+
+if [[ "$1" == "--normal" ]]; then 
+
+  sleep 2 && /usr/bin/python ~/bash_scripts/irssi-notifications.py &
+
+  notification_script=$! 
+
+  echo "$notification_script" >&2 
+
+  /usr/bin/irssi
+
+  kill -9 $notification_script
+
+  echo "Bye." >&2
+
+else
+
+  echo "LOADING NEW TERMINAL" >&2
+  xfce4-terminal -x irssi --normal 
+
+fi
