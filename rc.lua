@@ -91,7 +91,7 @@ myawesomemenu = {
 
 mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesome_icon },
                                     { "Debian", debian.menu.Debian_menu.Debian },
-				    { "Shutdown", function () awesome.spawn("gdm-control --shutdown"); awesome.quit() end }
+				    { "Shutdown Menu", function () awesome.spawn("xfce4-session-logout"); end }
                                   }
                         })
 

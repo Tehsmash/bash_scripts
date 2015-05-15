@@ -24,6 +24,6 @@ git clone https://github.com/Tehsmash/awesome-themes.git themes
 popd 
 
 #Setup RDM
-pushd ~
-git clone https://github.com/Tehsmash/rdm.git
-popd
+#pushd ~
+#git clone https://github.com/Tehsmash/rdm.git
+#popd
