@@ -30,7 +30,7 @@ git_ls()
     fandfs=(`echo "${fandfs[@]}" | tr ' ' '\n' | sort -u | sed -e 's/[]\/()$*.^|[]/\\\&/g'`)
     command="sed"
     for file in "${fandfs[@]}"; do
-      command="$command -e s/$file/$file\*/g"; 
+      command="$command -e s/\(\s\|^\)\(\x1B\[[0-9;]*[JKmsu]\)*$file/\1\2$file\*/g";
     done
     export COLUMNS="`tput cols`"  
     `which ls` -C "$@" | $command
