@@ -15,9 +15,8 @@ class MLStripper(HTMLParser):
         return ''.join(self.fed)
 
 def notify(title, text, timeout):
-    p1 = subprocess.Popen(['/bin/echo', 'naughty.notify({title = "%s", text = "%s", timeout = %d})' % (title, text, timeout)], stdout=subprocess.PIPE)
-    p2 = subprocess.Popen(['/usr/bin/awesome-client', '-'], stdin=p1.stdout, stdout=subprocess.PIPE)
-    p2.communicate()
+    timeout = str(timeout * 1000)
+    subprocess.check_call(['notify-send', title, text, '-t', timeout])
 
 def cHTML(html):
     h = MLStripper()
